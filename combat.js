@@ -443,11 +443,11 @@ function _enemyAutoHeal(roundLog) {
 function buildPVPEnemy(zoneType) {
   var budget;
   if (Math.random() < 0.05) {
-    budget = randInt(3000000, 8000000);
+    budget = randInt(4500000, 8000000);
   } else if (zoneType === 'red') {
-    budget = randInt(200000, 1500000);
+    budget = randInt(400000, 3000000);
   } else {
-    budget = randInt(50000, 300000);
+    budget = randInt(100000, 350000);
   }
 
   var remaining = budget;

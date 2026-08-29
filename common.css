@@ -1,0 +1,19 @@
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'Segoe UI', Roboto, -apple-system, sans-serif;
+  color:#e6eef4;
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer;}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-thumb{background:#2c4356; border-radius:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+#game-app{min-height:100vh;}
+.screen{display:none; min-height:100vh;}
+.screen.active{display:flex; flex-direction:column;}
+
+.hidden{display:none !important;}
+
+@keyframes fadeSlideIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }

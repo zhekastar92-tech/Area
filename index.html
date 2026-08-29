@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Текстовый Морской Бой</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/port.css">
+<link rel="stylesheet" href="css/battle.css">
+</head>
+<body>
+<div id="game-app">
+
+  <!-- ================= ЭКРАН ПОРТА ================= -->
+  <div id="port-screen" class="screen active">
+    <div class="port-header">
+      <div class="port-title">Kriegsmarine <span class="accent">// Порт</span></div>
+      <div class="currency-row">
+        <span>Серебро<b id="cur-silver">0</b></span>
+        <span>Опыт<b id="cur-xp">0</b></span>
+        <button class="btn" id="launch-btn" disabled>В бой</button>
+      </div>
+    </div>
+
+    <div class="port-tabs">
+      <button class="port-tab-btn active" data-tab="branches">Ветки</button>
+      <button class="port-tab-btn" data-tab="shop">Магазин</button>
+      <button class="port-tab-btn" data-tab="profile">Профиль</button>
+      <button class="port-tab-btn" data-tab="ranked">Рейтинг</button>
+      <button class="port-tab-btn" data-tab="constructor">Конструктор</button>
+    </div>
+
+    <div class="port-body">
+      <div class="port-panel active" id="panel-branches">
+        <div class="nation-select" id="nation-chips"></div>
+        <div id="branches-content"></div>
+        <div id="ship-detail-wrap"></div>
+      </div>
+
+      <div class="port-panel" id="panel-shop">
+        <div class="shop-grid" id="shop-grid"></div>
+      </div>
+
+      <div class="port-panel" id="panel-profile">
+        <div class="rank-banner" id="rank-banner"></div>
+        <div class="profile-grid" id="profile-grid"></div>
+      </div>
+
+      <div class="port-panel" id="panel-ranked">
+        <div class="leaderboard-list" id="leaderboard-list"></div>
+      </div>
+
+      <div class="port-panel" id="panel-constructor"></div>
+    </div>
+  </div>
+
+  <!-- ================= ЭКРАН БОЯ ================= -->
+  <div id="battle-screen" class="screen">
+    <div class="battle-topbar">
+      <div class="turn-block"><div class="turn-num" id="turn-num">Ход 1</div></div>
+      <div class="phase-block">
+        <div class="phase-label" id="phase-label">Планирование</div>
+        <div class="timer-wrap">
+          <div class="timer-bar-bg"><div class="timer-bar-fill" id="timer-bar" style="width:100%"></div></div>
+          <div class="timer-num" id="timer-num">15</div>
+        </div>
+      </div>
+      <div class="points-block">Очки<br><b id="points-num">0 : 0</b></div>
+    </div>
+
+    <div class="battle-body">
+      <div class="radar-panel">
+        <h3>Ваш корабль</h3>
+        <div class="own-status-row" id="own-status"></div>
+        <div id="player-fleet"></div>
+      </div>
+      <div class="radar-panel">
+        <h3>Противник</h3>
+        <div id="enemy-fleet"></div>
+      </div>
+
+      <div id="action-panel">
+        <h3>Приказ на ход (движение ИЛИ атака)</h3>
+        <div class="action-row">
+          <button class="action-btn" data-action="approach" onclick="setPlayerOrder(window.currentEngine,'approach')">Сближение</button>
+          <button class="action-btn" data-action="retreat" onclick="setPlayerOrder(window.currentEngine,'retreat')">Отступление</button>
+          <select class="target-select" id="move-target-select"></select>
+        </div>
+        <div class="action-row">
+          <button class="action-btn attack" data-action="gk" id="btn-gk" onclick="setPlayerOrder(window.currentEngine,'gk')">Огонь ГК</button>
+          <button class="action-btn attack" data-action="torp" id="btn-torp" onclick="setPlayerOrder(window.currentEngine,'torp')">Огонь торпедами</button>
+          <button class="action-btn dive-btn" data-action="dive" id="btn-dive" onclick="setPlayerOrder(window.currentEngine,'dive')">Погружение</button>
+          <select class="target-select" id="attack-target-select"></select>
+        </div>
+        <div class="locked-note" id="action-note"></div>
+      </div>
+
+      <div id="result-banner">
+        <h2 id="result-text"></h2>
+        <button class="btn" id="return-port-btn">Вернуться в порт</button>
+      </div>
+
+      <div id="log-panel">
+        <div class="log-tabs">
+          <button class="log-tab-btn active" id="tab-mine">Мой лог</button>
+          <button class="log-tab-btn" id="tab-global">Лог боя</button>
+        </div>
+        <div class="log-body" id="log-body"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/dataGenerator.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/combatMath.js"></script>
+<script src="js/shipInstance.js"></script>
+<script src="js/botAI.js"></script>
+<script src="js/battleEngine.js"></script>
+<script src="js/progressionSystem.js"></script>
+<script src="js/uiPort.js"></script>
+<script src="js/uiBattle.js"></script>
+<script src="js/constructorUI.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

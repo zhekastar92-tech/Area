@@ -47,7 +47,7 @@ const Storage = {
   getProfile(){
     let raw = localStorage.getItem(this.KEYS.PROFILE);
     if(!raw){
-      const p = { silver:5000000, freeXp:0, shipXp:{}, elo:0, battles:0, wins:0, ownedShipIds:[], selectedShipId:null };
+      const p = { silver:29856240, freeXp:3580980, shipXp:{}, elo:10568, battles:0, wins:0, ownedShipIds:[], selectedShipId:null };
       // на старте открыты все ЭМ 1 тира каждой нации
       Storage.getShipsDB().filter(s=>s.tier===1).forEach(s=>p.ownedShipIds.push(s.id));
       localStorage.setItem(this.KEYS.PROFILE, JSON.stringify(p));

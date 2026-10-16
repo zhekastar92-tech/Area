@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Текстовый Морской Бой</title>
+<title>Kriegsmarine // Тактический Морской Бой</title>
 <link rel="stylesheet" href="css/common.css">
 <link rel="stylesheet" href="css/port.css">
 <link rel="stylesheet" href="css/battle.css">
@@ -14,17 +14,17 @@
   <!-- ================= ЭКРАН ПОРТА ================= -->
   <div id="port-screen" class="screen active">
     <div class="port-header">
-      <div class="port-title">Kriegsmarine <span class="accent">// Порт</span></div>
+      <div class="port-title">Kriegsmarine <span class="accent">// Тактический Порт</span></div>
       <div class="currency-row">
-        <span>Серебро<b id="cur-silver">0</b></span>
-        <span>Опыт<b id="cur-xp">0</b></span>
-        <button class="btn" id="launch-btn" disabled>В бой</button>
+        <span class="cur-pill silver-pill">Серебро <b id="cur-silver">0</b></span>
+        <span class="cur-pill xp-pill">Своб. опыт <b id="cur-xp">0</b></span>
+        <button class="btn btn-glow" id="launch-btn" disabled>В бой</button>
       </div>
     </div>
 
     <div class="port-tabs">
-      <button class="port-tab-btn active" data-tab="hangar">Порт</button>
-      <button class="port-tab-btn" data-tab="branches">Ветки</button>
+      <button class="port-tab-btn active" data-tab="hangar">Ангар</button>
+      <button class="port-tab-btn" data-tab="branches">Ветки исследования</button>
       <button class="port-tab-btn" data-tab="shop">Магазин</button>
       <button class="port-tab-btn" data-tab="profile">Профиль</button>
       <button class="port-tab-btn" data-tab="ranked">Рейтинг</button>
@@ -62,12 +62,11 @@
 
   <!-- ================= ЭКРАН БОЯ ================= -->
   <div id="battle-screen" class="screen">
-    <div id="radar-map-wrap">
-      <svg id="radar-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg>
-    </div>
-
     <div class="battle-topbar">
-      <div class="turn-block"><div class="turn-num" id="turn-num">Ход 1</div></div>
+      <div class="turn-block">
+        <div class="turn-num" id="turn-num">Ход 1</div>
+        <div class="bracket-sub" id="bracket-label">Активный бой</div>
+      </div>
       <div class="phase-block">
         <div class="phase-label" id="phase-label">Планирование</div>
         <div class="timer-wrap">
@@ -75,51 +74,67 @@
           <div class="timer-num" id="timer-num">15</div>
         </div>
       </div>
-      <div class="points-block">Очки<br><b id="points-num">0 : 0</b></div>
+      <div class="points-block">Очки захвата<br><b id="points-num">0 : 0</b></div>
+    </div>
+
+    <div id="radar-map-wrap">
+      <div class="radar-stage">
+        <svg id="radar-svg" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet"></svg>
+        <canvas id="radar-fx-canvas" width="720" height="720"></canvas>
+        <div class="radar-legend">
+          <span class="leg-item"><i class="leg-dot ally"></i>Союзники</span>
+          <span class="leg-item"><i class="leg-dot enemy"></i>Противник</span>
+          <span class="leg-item"><i class="leg-dot range-gk"></i>Дальность ГК</span>
+          <span class="leg-item"><i class="leg-dot range-conceal"></i>Ваш засвет</span>
+        </div>
+      </div>
     </div>
 
     <div class="battle-body">
       <div class="radar-panel">
-        <h3>Ваш корабль</h3>
+        <h3>Союзная эскадра</h3>
         <div class="own-status-row" id="own-status"></div>
         <div id="player-fleet"></div>
       </div>
       <div class="radar-panel">
-        <h3>Противник</h3>
+        <h3>Эскадра противника</h3>
         <div id="enemy-fleet"></div>
       </div>
 
       <div id="action-panel">
-        <h3>Приказ на ход (движение ИЛИ атака)</h3>
+        <div class="action-header-row">
+          <h3>Тактический приказ на ход (движение ИЛИ атака)</h3>
+          <button class="btn btn-commit" id="commit-turn-btn" title="Не ждать окончания таймера и выполнить ход сейчас">Выполнить ход ⚡</button>
+        </div>
         <div class="action-row">
-          <button class="action-btn" data-action="approach" onclick="setPlayerOrder(window.currentEngine,'approach')">Сближение</button>
-          <button class="action-btn" data-action="retreat" onclick="setPlayerOrder(window.currentEngine,'retreat')">Отступление</button>
+          <button class="action-btn" data-action="approach" onclick="setPlayerOrder(window.currentEngine,'approach')">▲ Сближение</button>
+          <button class="action-btn" data-action="retreat" onclick="setPlayerOrder(window.currentEngine,'retreat')">▼ Отступление</button>
           <select class="target-select" id="move-target-select"></select>
         </div>
         <div class="action-row">
-          <button class="action-btn attack" data-action="gk" id="btn-gk" onclick="setPlayerOrder(window.currentEngine,'gk')">Огонь ГК</button>
-          <button class="action-btn attack" data-action="torp" id="btn-torp" onclick="setPlayerOrder(window.currentEngine,'torp')">Огонь торпедами</button>
-          <button class="action-btn dive-btn" data-action="dive" id="btn-dive" onclick="setPlayerOrder(window.currentEngine,'dive')">Погружение</button>
+          <button class="action-btn attack" data-action="gk" id="btn-gk" onclick="setPlayerOrder(window.currentEngine,'gk')">💥 Огонь ГК</button>
+          <button class="action-btn attack" data-action="torp" id="btn-torp" onclick="setPlayerOrder(window.currentEngine,'torp')">🌊 Пуск торпед</button>
+          <button class="action-btn dive-btn" data-action="dive" id="btn-dive" onclick="setPlayerOrder(window.currentEngine,'dive')">⚓ Погружение</button>
           <select class="target-select" id="attack-target-select"></select>
         </div>
         <div class="locked-note" id="action-note"></div>
       </div>
 
       <div id="dead-panel" style="display:none;">
-        <p>Ваш корабль потоплен. Бой продолжается без вас.</p>
-        <button class="btn" id="skip-battle-btn">Пропустить бой</button>
+        <p>Ваш корабль потоплен. Вы наблюдаете за боем с камер эскадры.</p>
+        <button class="btn" id="skip-battle-btn">Быстрый расчёт до конца боя ⏩</button>
       </div>
 
       <div id="result-banner">
         <h2 id="result-text"></h2>
         <div id="result-stats-wrap"></div>
-        <button class="btn" id="return-port-btn">Вернуться в порт</button>
+        <button class="btn btn-glow" id="return-port-btn">Вернуться в порт</button>
       </div>
 
       <div id="log-panel">
         <div class="log-tabs">
-          <button class="log-tab-btn active" id="tab-mine">Мой лог</button>
-          <button class="log-tab-btn" id="tab-global">Лог боя</button>
+          <button class="log-tab-btn active" id="tab-mine">Личный бортжурнал</button>
+          <button class="log-tab-btn" id="tab-global">Сводка боя</button>
         </div>
         <div class="log-body" id="log-body"></div>
       </div>
@@ -141,3 +156,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+
